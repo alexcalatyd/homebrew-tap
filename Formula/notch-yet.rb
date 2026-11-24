@@ -1,14 +1,15 @@
 class NotchYet < Formula
   desc "Your MacBook's notch tells you when Claude Code is done"
   homepage "https://github.com/alexcalatyd/NotchYet"
-  url "https://github.com/alexcalatyd/NotchYet/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "7557c765be37eb9be03a5b882402414f3def3d994c1669c20379663eeff260a2"
+  url "https://github.com/alexcalatyd/NotchYet/releases/download/v1.0.0/notch-yet"
+  version "1.0.0"
+  sha256 "50b7bebfb13ba74e7050fdf169048b3e144ce271d56a020c3f252a46c7d8dcc1"
   license "MIT"
 
   depends_on :macos
 
+  # A universal binary (Apple Silicon + Intel), ad hoc signed, built by build.sh in the NotchYet repo.
   def install
-    system "swiftc", "-O", "-swift-version", "5", "-o", "notch-yet", "Sources/main.swift"
     bin.install "notch-yet"
   end
 
