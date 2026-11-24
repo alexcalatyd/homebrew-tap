@@ -1,6 +1,6 @@
 cask "micro" do
-  version "0.3"
-  sha256 "d3276a21a4c809a112a86ca5a8ef6fc7696c694c183bfc7521cc114be7a63a37"
+  version "0.4"
+  sha256 "5f06527eee77d0e3532e4fd9beb33bc76b9b6fc2150b2f265b1bc220e1ed5b82"
 
   url "https://github.com/alexcalatyd/Micro/releases/download/v#{version}/Micro.dmg"
   name "Micro"
