@@ -1,9 +1,8 @@
 class Mactv < Formula
   desc "Turn a Mac on your TV into a TV interface, with your phone as the remote"
   homepage "https://github.com/alexcalatyd/MacTV"
-  url "https://github.com/alexcalatyd/MacTV/archive/926945256fde8104b8323631ae12b580cd3de0bb.tar.gz"
-  version "1.0.0"
-  sha256 "76c8ffde3c7d0c098ca0b4de83cdba8ef14ccc320b237c6c48a54b9c7a182099"
+  url "https://github.com/alexcalatyd/MacTV/archive/refs/tags/v1.0.0.tar.gz"
+  sha256 "b61c4410d538ff0903ed02cedc562d018d5c236ba7f80e4d388a341943ab2f1b"
   license "MIT"
   head "https://github.com/alexcalatyd/MacTV.git", branch: "main"
 

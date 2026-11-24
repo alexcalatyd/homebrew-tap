@@ -1,9 +1,8 @@
 class Nocturne < Formula
   desc "Music player for the terminal with spectrum, album art and Spotify"
   homepage "https://github.com/alexcalatyd/Nocturne"
-  url "https://github.com/alexcalatyd/Nocturne/archive/dc1a3ed498194a142d4d60c16ddecc78cc29d28b.tar.gz"
-  version "1.0.0"
-  sha256 "872473913ea362e4543946425900cfb15ec4517b1257a67b8c60cab26681179b"
+  url "https://github.com/alexcalatyd/Nocturne/archive/refs/tags/v1.0.0.tar.gz"
+  sha256 "b011ed4adf9d996a5746217a541d0d9ebd4c21c633462a71e61afa4fc0b87b83"
   license "MIT"
   head "https://github.com/alexcalatyd/Nocturne.git", branch: "main"
 

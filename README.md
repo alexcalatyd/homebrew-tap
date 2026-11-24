@@ -23,6 +23,10 @@ brew install alexcalatyd/tap/<name>
 | [micro](https://github.com/alexcalatyd/Micro) | A tiny floating player that lives in your menu bar |
 | [tap](https://github.com/alexcalatyd/Tap) | Paste a link, get the file: video and audio downloader powered by yt-dlp |
 | [stash](https://github.com/alexcalatyd/Stash) | Everything you copy, one shortcut away: clipboard history for the menu bar |
+| [hecho](https://github.com/alexcalatyd/Hecho) | Your to-dos, alone or together: groups, priorities and real-time shared spaces |
+| [ideck](https://github.com/alexcalatyd/iDeck) | Your Mac's control center, on your phone |
+| [trackdrum](https://github.com/alexcalatyd/TrackDrum) | Turn your MacBook's trackpad into an instrument and loop what you play |
+| [backspace](https://github.com/alexcalatyd/Backspace) | A real terminal for macOS, wearing five different pasts |
 
 The apps need Apple Silicon. They aren't notarized by Apple, so the first time
 macOS blocks them: open them once from **System Settings → Privacy & Security →

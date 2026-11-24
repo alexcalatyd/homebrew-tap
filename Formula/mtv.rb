@@ -3,9 +3,8 @@ class Mtv < Formula
 
   desc "Markdown Terminal Viewer: read a README in the terminal the way GitHub shows it"
   homepage "https://github.com/alexcalatyd/MTV"
-  url "https://github.com/alexcalatyd/MTV/archive/741a7569901a980468b0c2a898cfc3bc4a5c73d3.tar.gz"
-  version "0.1.0"
-  sha256 "8ced25d9b191848f55fae34493de1b8bd59b999a3ea0db1f63906c148bac1bd7"
+  url "https://github.com/alexcalatyd/MTV/archive/refs/tags/v0.1.0.tar.gz"
+  sha256 "5ae9a92e39497f2dd09dec92525d10013d272672c712380659e6b6bb956897a9"
   license "MIT"
   head "https://github.com/alexcalatyd/MTV.git", branch: "main"
 

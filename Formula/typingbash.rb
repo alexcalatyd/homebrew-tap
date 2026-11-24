@@ -3,9 +3,8 @@ class Typingbash < Formula
 
   desc "Typing test for the terminal, in the spirit of Monkeytype"
   homepage "https://github.com/alexcalatyd/TypingBash"
-  url "https://github.com/alexcalatyd/TypingBash/archive/c0c3fb2255c5a73039016e5fc2ad261acaba705e.tar.gz"
-  version "1.0.0"
-  sha256 "69a998d8b11027dd8cef4c049b6c47819a104dfe63be8d957c58aa24e08f12ab"
+  url "https://github.com/alexcalatyd/TypingBash/archive/refs/tags/v1.0.0.tar.gz"
+  sha256 "43f6a0aa7d37629cee0bdd9084835b3938b49d2f6425d3e6fd57b1fdcd3df9ba"
   license "MIT"
   head "https://github.com/alexcalatyd/TypingBash.git", branch: "main"
 
