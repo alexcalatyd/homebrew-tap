@@ -1,6 +1,6 @@
 cask "hecho" do
-  version "0.1.0"
-  sha256 "414929d1240cdaac09128ded78ed4d6d74db4d2ee2f3da4f5979dceac8f267a9"
+  version "0.2.0"
+  sha256 "c91ea17efcbc9813b6dd6c0dd9eec62486259755fa0af19fea6236ec41c26377"
 
   url "https://github.com/alexcalatyd/Hecho/releases/download/v#{version}/Hecho.zip"
   name "Hecho"
