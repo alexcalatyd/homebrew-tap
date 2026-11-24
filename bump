@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+"""Keep this tap in step with the GitHub releases of each project.
+
+  ./bump              same as `check`
+  ./bump check        what's outdated, and which projects have unreleased code
+  ./bump update       move every formula/cask with a newer release to it
+  ./bump update mtv   only those named
+  ./bump update --no-push   commit, but don't push
+
+Each formula/cask is matched to its repo through its `homepage`. "Newer
+release" means the repo's latest GitHub release has a different version than
+the tap. Only needs python3 and the gh CLI (logged in).
+"""
+import hashlib
+import json
+import re
+import subprocess
+import sys
+import urllib.request
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+DOCS = re.compile(r"(^|/)(README|LICENSE|CHANGELOG|THIRD_PARTY_NOTICES)[^/]*$|^docs/|^\.github/|\.md$", re.I)
+
+
+def gh(path):
+    out = subprocess.run(["gh", "api", path], capture_output=True, text=True)
+    return json.loads(out.stdout) if out.returncode == 0 else None
+
+
+def entries():
+    for kind, folder in (("formula", "Formula"), ("cask", "Casks")):
+        for f in sorted((ROOT / folder).glob("*.rb")):
+            s = f.read_text()
+            repo = re.search(r'homepage "https://github\.com/([^"]+)"', s).group(1)
+            url = re.search(r'^  url "([^"]+)"', s, re.M).group(1)
+            m = re.search(r'^  version "([^"]+)"', s, re.M) or re.search(r"/v?(\d[\w.]*)\.tar\.gz$", url)
+            yield {"name": f.stem, "kind": kind, "file": f, "text": s, "repo": repo, "url": url,
+                   "version": m.group(1)}
+
+
+def latest(repo):
+    rel = gh(f"repos/{repo}/releases/latest")
+    if not rel:
+        return None, None
+    return rel["tag_name"], rel["tag_name"].lstrip("v")
+
+
+def unreleased(repo, tag):
+    """Commits on the default branch after `tag` that touch more than docs."""
+    cmp = gh(f"repos/{repo}/compare/{tag}...HEAD")
+    if not cmp or not cmp.get("ahead_by"):
+        return 0, []
+    code = [f["filename"] for f in cmp.get("files", []) if not DOCS.search(f["filename"])]
+    return cmp["ahead_by"], code
+
+
+def sha256(url):
+    h = hashlib.sha256()
+    with urllib.request.urlopen(url) as r:
+        for chunk in iter(lambda: r.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def check():
+    stale = []
+    for e in entries():
+        tag, ver = latest(e["repo"])
+        if not tag:
+            print(f"  ?  {e['name']:<12} no GitHub release in {e['repo']}")
+            continue
+        if ver != e["version"]:
+            print(f"  ↑  {e['name']:<12} tap {e['version']} → release {ver}   (./bump update {e['name']})")
+            stale.append(e["name"])
+            continue
+        ahead, code = unreleased(e["repo"], tag)
+        if code:
+            print(f"  ●  {e['name']:<12} {ver}, but {ahead} commit(s) since {tag} change code "
+                  f"({', '.join(code[:3])}{'…' if len(code) > 3 else ''}) → worth a new release?")
+        else:
+            print(f"  ✓  {e['name']:<12} {ver}")
+    return stale
+
+
+def update(names, push=True):
+    done = []
+    for e in entries():
+        if names and e["name"] not in names:
+            continue
+        tag, ver = latest(e["repo"])
+        if not tag or ver == e["version"]:
+            continue
+        s, old = e["text"], e["version"]
+        if e["kind"] == "cask" or re.search(r'^  version "', s, re.M):
+            s = re.sub(r'^(  version ")[^"]+(")', rf"\g<1>{ver}\g<2>", s, count=1, flags=re.M)
+        new_url = e["url"].replace("#{version}", ver) if "#{version}" in e["url"] else e["url"].replace(old, ver)
+        if "#{version}" not in e["url"]:
+            s = s.replace(e["url"], new_url)
+        try:
+            digest = sha256(new_url)
+        except Exception as err:  # asset missing, e.g. a release without the .zip yet
+            print(f"  ✗  {e['name']}: can't download {new_url} ({err}); left at {old}")
+            continue
+        s = re.sub(r'^(  sha256 ")[0-9a-f]{64}(")', rf"\g<1>{digest}\g<2>", s, count=1, flags=re.M)
+        e["file"].write_text(s)
+        print(f"  ↑  {e['name']} {old} → {ver}")
+        done.append(f"{e['name']} {ver}")
+    if not done:
+        print("Everything is up to date.")
+        return
+    git = lambda *a: subprocess.run(["git", "-C", str(ROOT), *a], check=True)
+    git("add", "Formula", "Casks")
+    git("commit", "-q", "-m", "Update " + ", ".join(done))
+    if push:
+        git("push", "-q")
+        print("Pushed.")
+
+
+if __name__ == "__main__":
+    args = sys.argv[1:]
+    cmd = args.pop(0) if args else "check"
+    if cmd == "check":
+        sys.exit(0 if not check() else 1)
+    elif cmd == "update":
+        push = "--no-push" not in args
+        update([a for a in args if not a.startswith("--")], push=push)
+    else:
+        print(__doc__)
+        sys.exit(2)

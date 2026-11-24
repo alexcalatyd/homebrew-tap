@@ -33,3 +33,14 @@ brew install alexcalatyd/tap/<name>
 The apps need Apple Silicon. They aren't notarized by Apple, so the first time
 macOS blocks them: open them once from **System Settings → Privacy & Security →
 Open Anyway**, or run `xattr -dr com.apple.quarantine /Applications/<App>.app`.
+
+## Keeping it up to date
+
+After publishing a GitHub release in a project (for an app, with its
+`.zip`/`.dmg` attached), move the tap to it:
+
+```sh
+./bump check         # what's outdated, and which projects have unreleased code
+./bump update        # move everything to its latest release, commit and push
+./bump update mtv    # just one
+```
