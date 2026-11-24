@@ -3,6 +3,8 @@
 Homebrew formulae and casks for my tools.
 
 ```sh
+brew tap alexcalatyd/tap
+brew trust alexcalatyd/tap   # Homebrew asks you to trust third-party taps once
 brew install alexcalatyd/tap/<name>
 ```
 
